@@ -1,19 +1,21 @@
 //setup  -----------------------------------------------------------------------
 
 //libraries
+require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
-
+const {Person, checkIdFormat} = require('./models/person')
 
 const app = express()
+
+//middlewares
+app.use(express.static('dist'))
+app.use(express.json())
 
 //add 'body' token to morgan with a string representation of
 //the body created by express.json()
 morgan.token('body', (req, res)=>JSON.stringify(req.body))
 
-//middlewares
-app.use(express.static('dist'))
-app.use(express.json())
 app.use(morgan(
 	':method :url :status ' + 
 	':res[content-length] - :response-time ms ' + 
@@ -34,128 +36,108 @@ app.use((req, res, next) => {
 
 })
 
-//app data  --------------------------------------------------------------------
-let persons = [
-    { 
-      "id": "1",
-      "name": "Arto Hellas", 
-      "number": "040-123456"
-    },
-    { 
-      "id": "2",
-      "name": "Ada Lovelace", 
-      "number": "39-44-5323523"
-    },
-    { 
-      "id": "3",
-      "name": "Dan Abramov", 
-      "number": "12-43-234345"
-    },
-    { 
-      "id": "4",
-      "name": "Mary Poppendieck", 
-      "number": "39-23-6423122"
-    }
-]
-
 //create  ----------------------------------------------------------------------
 
 //unique name check
 const checkDuplicate = (req, res, next) => {
 
-	if (persons.some((person)=>person.name===req.body.name)) {
-		return res.status(400).json({ 
-      error: 'name must be unique' 
-    })
-	}
-
-	next()
+	Person.findOne({name: req.body.name}).then(person=> {
+		if (person!==null) {
+			return res.status(400).json({ 
+				error: 'name must be unique' 
+			})
+		}
+		next()
+	})
 
 }
 
-const generateId = () => {
-  return Math.floor(100000*Math.random()).toString()
-} 
-
-app.post('/api/persons', checkDuplicate, (req, res) => {
+app.post('/api/persons', checkDuplicate, (req, res, next) => {
   const body = req.body 
 
-  const person = {
-		id: generateId(),
+  const person = new Person({
     name: body.name,
 		number: body.number,
-  }
+  })
 
-  persons = persons.concat(person)
-  res.json(person)
+	person.save()
+	.then(savedPerson=>{res.json(savedPerson)})
+	.catch(err=>next(err)) 
 
 })
 
 //read  ------------------------------------------------------------------------
 
-app.get('/api/persons/:id', (request, response) => {
-  const id = request.params.id
-  const person = persons.find(person => person.id === id)
-
-  if (person) {
-    response.json(person)
-  } else {
-    response.status(404).end()
-  }
+app.get('/api/persons/:id', checkIdFormat, (req, res) => {
+  Person.findById(req.params.id)
+	.then(person => {
+		if (person){res.json(person)}
+		else {res.status(404).end()}
+    
+  })
+	.catch(err=>next(err)) 
 })
 
-app.get('/info', (request, response) => {
-  response.send(
-		`<p>Phonebook has info for ${persons.length} people</p>` +
-		`<p>${new Date()}</p>`
-
-	)
+app.get('/info', (req, res) => {
+	Person.countDocuments({}).then(count => {
+    res.send(
+			`<p>Phonebook has info for ${count} people</p>` +
+			`<p>${new Date()}</p>`
+		)	
+  })
 })
  
-app.get('/api/persons', (request, response) => {
-  response.json(persons)
+app.get('/api/persons', (req, res) => {
+  Person.find({}).then(persons => {
+    res.json(persons)
+  })
 })
 
 //update  ----------------------------------------------------------------------
 
-//extra middleware to ensure resource exists before update/delete
-const checkExist = (req, res, next) => {
+app.put('/api/persons/:id', checkIdFormat, (request, response, next) => {
+  const id = request.params.id;
+  const { name, number } = request.body;
 
-	if (
-		(req.method === 'PUT' || req.method === 'DELETE') &&
-		!persons.some((person)=>person.id===req.params.id)
-	) {
-		return res.status(404).json({ 
-      error: 'Unable to find entry' 
-    })
-	}
+  Person.findByIdAndUpdate(
+    id,
+    { name, number },
+    { new: true, runValidators: true, context: 'query' }
+  )
+	.then(updatedPerson => {
+		if (updatedPerson) {
+			response.json(updatedPerson);
+		} else {
+			response.status(404).json({ error: 'Person not found' });
+		}
+	})
+	.catch(err=>next(err)) 
+});
 
-	next()
-
-}
-
-app.put('/api/persons/:id', checkExist, (req, res) => {
-	
-	const newPerson = {id:req.params.id, ...req.body}
-
-	persons = persons.map(
-		(person)=>person.id===req.params.id
-			?newPerson
-			:person
-	)
-
-	res.json(newPerson)
-
-})
 
 //delete  ----------------------------------------------------------------------
 
-app.delete('/api/persons/:id', checkExist, (request, response) => {
-  const id = request.params.id
-  persons = persons.filter(person => person.id !== id)
+app.delete('/api/persons/:id', checkIdFormat, (request, response) => {
+  const id = request.params.id;
 
-  response.status(204).end()
-})
+  Person.findByIdAndDelete(id)
+    .then((deletedPerson) => {
+			if (deletedPerson) 	{response.status(204).end()}
+			else								{response.status(404).end()}
+		
+		})
+    .catch(err=>next(err)) 
+});
+
+//generic error
+const errorHandler = (err, req, res, next) => {
+	if (err.name==='ValidationError') {
+		return res.status(400).json({ error: err.message })
+	}
+  res.status(500).end()
+}
+
+app.use(errorHandler)
 
 //generic 404  -----------------------------------------------------------------
 

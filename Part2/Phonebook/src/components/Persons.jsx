@@ -5,6 +5,7 @@ const OnePerson = ({person, handleDelete}) =>
 	</p>
 
 const Persons = ({persons, search, handleDelete}) => {
+	
 	return <>
 	{persons
 		.filter((person)=>person.name.toLowerCase().includes(search.toLowerCase()))
