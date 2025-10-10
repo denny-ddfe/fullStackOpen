@@ -48,13 +48,14 @@ const App = () => {
 			))
 			showNotif({msg:`Updated ${updatedPerson.name}`, type:'success'})
 		})
-		.catch(()=>{
+		.catch((err)=>{
+			
+			console.log(err)
 
 			showNotif({
-				msg:`Information of ${updatedPerson.name} has already been removed from server`,
+				msg: err.response.data.error,
 				type:'error'
 			})
-			setPersons(persons.filter((person)=>person.id!==updatedPerson.id))
 		})
 	}
 
@@ -89,11 +90,13 @@ const App = () => {
 		.then(newPerson=>{
 				setPersons(persons.concat(newPerson))
 				showNotif({msg:`Added ${newPerson.name}`, type:'success'})
+				//reset inputs
+				nameRef.current.value=''
+				numRef.current.value=''
 		})
-
-		//reset inputs
-		nameRef.current.value=''
-		numRef.current.value=''
+		.catch(err => {
+			showNotif({msg: err.response.data.error, type: 'error'})
+		})
 
 	}
 
