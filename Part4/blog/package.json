@@ -4,15 +4,21 @@
   "description": "blog post backend",
   "main": "index.js",
   "scripts": {
-		"start": "node index.js",
-    "test": "node --test",
-    "dev": "node --watch index.js"
+    "start": "cross-env NODE_ENV=production node index.js",
+    "test": "cross-env NODE_ENV=test node --test",
+    "dev": "cross-env NODE_ENV=dev node --watch index.js"
   },
   "author": "DC",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cross-env": "^10.1.0",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.19.1"
+  },
+  "devDependencies": {
+    "supertest": "^7.1.4"
   }
 }
