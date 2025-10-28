@@ -6,49 +6,31 @@ const initialBlogs = [
     "author": "Michael Chan",
     "url": "https://reactpatterns.com/",
     "likes": 7,
-    "user": "68f1d061da31ce8cc39c8605",
+    "user": "68feedd653e24d10aff46dd9",
     "_id": "68f061b49da585757ea51986"
   },
   {
-    "title": "Go To Statement Considered Harmful",
-    "author": "Edsger W. Dijkstra",
-    "url": "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
+    "title": "2nd",
+    "author": "abc",
+    "url": "https://abc.com/",
+    "likes": 6,
+    "user": "68feedd653e24d10aff46dd9",
+  },
+  {
+    "title": "3rd",
+    "author": "def",
+    "url": "https://def.com/",
     "likes": 5,
-    "user": "68f1d061da31ce8cc39c8605",
-    "_id": "68f061b49da585757ea51987"
-  },
-  {
-    "title": "Canonical string reduction",
-    "author": "Edsger W. Dijkstra",
-    "url": "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
-    "likes": 12,
-    "user": "68f1d061da31ce8cc39c8605",
-    "_id": "68f061b49da585757ea51988"
-  },
-  {
-    "title": "First class tests",
-    "author": "Robert C. Martin",
-    "url": "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll",
-    "likes": 10,
-    "user": "68f1d061da31ce8cc39c8605",
-    "_id": "68f061b49da585757ea51989"
+    "user": "68feedd653e24d10aff46dd9",
   },
   {
     "title": "TDD harms architecture",
     "author": "Robert C. Martin",
     "url": "http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html",
     "likes": 0,
-    "user": "68f6c3e06a5a1734ad133c47",
+    "user": "68feedd653e24d10aff46dda",
     "_id": "68f061b49da585757ea5198a"
   },
-  {
-    "title": "Type wars",
-    "author": "Robert C. Martin",
-    "url": "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
-    "likes": 2,
-    "user": "68f6c3e06a5a1734ad133c47",
-    "_id": "68f061b49da585757ea5198b"
-  }
 ]
 
 const exampleBlog = {

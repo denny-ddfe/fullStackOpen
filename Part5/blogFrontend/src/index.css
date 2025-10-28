@@ -1,0 +1,12 @@
+.notif {
+    font-size: 30px;
+    background: lightgrey;
+}
+
+.error {
+    color: red;
+}
+
+.success {
+    color: green;
+}

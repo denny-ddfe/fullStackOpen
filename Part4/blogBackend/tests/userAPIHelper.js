@@ -1,18 +1,17 @@
-const User = require('../models/blog')
-
-initialUsers = [
-    {
-        "_id": "68f1d061da31ce8cc39c8605",
+const initialUsers = [
+    {   
+        "_id": "68feedd653e24d10aff46dd9",
         "username": "testUsername",
         "passwordHash": "$2b$10$BbDSBoQ31w0gQZS6XtWR/eAUYcdX4ZYub.N/f.xg4kwTrqLUnmnIi",
         "name": "test username",
+        "blogs": ["68f061b49da585757ea51986"]
     },
     {
-        "_id": "68f6c3e06a5a1734ad133c47",
-        "username": "second test user",
-        "passwordHash": "$2b$10$kcCLUtDh.sjBqYaM2fzko.9DKmw6pQRUM1Zwr.0UZMjNmrS40X0bC",
+        "_id": "68feedd653e24d10aff46dda",
+        "username": "asdf",
+        "passwordHash": "$2b$10$stQx7NR9.ORSJa7BkA1Z8eIixBYPUZ6dtmw7tbw8XFlp4wSSnzcoK",
         "name": "test name",
-        "__v": 0
+        "blogs": ["68f061b49da585757ea5198a"]
     }
 ]
 

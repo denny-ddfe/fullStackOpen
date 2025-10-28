@@ -12,20 +12,24 @@ const jwt = require('jsonwebtoken')
 
 const api = supertest(app)
 
+let blogsToInsert
 let testToken
+let testUser
 
-beforeEach(async () => {
-
-	const testUser = userHelper.initialUsers[0]
-
+before(async() => {
 	await User.deleteMany({})
 	await User.insertMany(userHelper.initialUsers)
+
+	testUser = userHelper.initialUsers[0]
 
 	testToken = jwt.sign({
 		username: testUser.username,
 		id: testUser._id
 	}, process.env.SECRET)
 	//console.log(testToken)
+})
+
+beforeEach(async () => {
 
 	await Blog.deleteMany({})
 	await Blog.insertMany(blogHelper.initialBlogs)
@@ -147,10 +151,10 @@ describe('Updating', () => {
 describe('Deleting', () => {
 
 	test('basic functionality', async () => {
-		
+
 		//find a blog created by the test user
 		const blogToDelete = blogHelper.initialBlogs.find((blog) => {
-			return blog.user.toString() === userHelper.initialUsers[0]._id
+			return blog.user.toString() === testUser._id.toString()
 		})
 
 		assert(blogToDelete, 'Bad test data - no blogs created by test user')
@@ -183,7 +187,7 @@ describe('Deleting', () => {
 		
 	//find a blog not created by the test user
 		const blogToDelete = blogHelper.initialBlogs.find((blog) => {
-			return blog.user.toString() !== userHelper.initialUsers[0]._id
+			return blog.user.toString() !== testUser._id.toString()
 		})
 
 		assert(blogToDelete, 'Bad test data - all blogs created by test user')

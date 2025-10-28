@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "cross-env NODE_ENV=production node index.js",
-    "test": "cross-env NODE_ENV=test node --test",
-    "dev": "cross-env NODE_ENV=dev node --watch index.js"
+    "test": "cross-env NODE_ENV=test node --test --test-concurrency 1",
+    "dev": "cross-env NODE_ENV=dev node --watch index.js",
+    "start:test": "cross-env NODE_ENV=test node --watch index.js"
   },
   "author": "DC",
   "license": "ISC",
@@ -22,3 +23,4 @@
     "supertest": "^7.1.4"
   }
 }
+ 

@@ -14,7 +14,12 @@ export default [
         ecmaVersion: 'latest',
         ecmaFeatures: { jsx: true },
         sourceType: 'module'
+      },
+      languageOptions: {
+      globals: {
+        ...globals.vitest
       }
+    }
     },
     plugins: {
       'react-hooks': reactHooks,
@@ -28,6 +33,6 @@ export default [
         'warn',
         { allowConstantExport: true }
       ]
-    }
+    },
   }
 ]

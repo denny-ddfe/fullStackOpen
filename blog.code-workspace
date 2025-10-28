@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "Part5/blogFrontend"
+		},
+		{
+			"path": "Part4/blogBackend"
+		},
+		{
+			"path": "Part5/blogTests"
+		}
+	],
+	"settings": {}
+}

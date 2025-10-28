@@ -1,24 +1,44 @@
 import { useState, useEffect } from 'react'
-import Blog from './components/Blog'
+import Login from './components/Login'
+import Notification from './components/Notification'
+import PageContent from './components/PageContent'
 import blogService from './services/blogs'
+import './index.css'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
+  const [user, setUser] = useState(null)
+	const [notif, setNotif] = useState({msg:null, type:'error'})
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )  
+    //get user from local storage
+    const cachedUserJSON = window.localStorage.getItem('cachedUser')
+    if (cachedUserJSON) {
+			const cachedUser = JSON.parse(cachedUserJSON)
+			setUser(cachedUser)
+		}
   }, [])
 
+	//when user updates, set token in blog service
+	useEffect(()=> {
+		blogService.setToken(user?.token || '')
+	}, [user])
+
+	//when notif updates, hide it after 5s
+	useEffect (() => {
+		setTimeout(() => {setNotif(null)}, 5000)
+	}, [notif])
+
+//##############################################################################
+
+  //page content
   return (
-    <div>
-      <h2>blogs</h2>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      )}
-    </div>
+    <>
+      {user && <h2>blogs</h2>}
+			<Notification content={notif}/>
+			<Login {...{ user, setUser, setNotif }}/>
+			<PageContent {...{user, setNotif}}/>
+    </>
   )
 }
 
-export default App
+export default App 
