@@ -2,8 +2,8 @@ import { useSelector } from "react-redux"
 
 const Notification = () => {
 
-	const notif = useSelector(({notification}) => {
-		return notification
+	const notifs = useSelector(({notifications}) => {
+		return notifications
 	})
 
   const style = {
@@ -13,12 +13,14 @@ const Notification = () => {
     marginBottom: 10
   }
 
-	if (!notif) {
+	if (notifs.length===0) {
 		return null
 	}
 
   return <div style={style}>
-		{notif}
+		{notifs.map((notif)=>{
+			return <div key={notif.timestamp}>{notif.content}</div>
+		})}
 	</div>
 }
 
