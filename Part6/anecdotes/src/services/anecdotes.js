@@ -10,7 +10,6 @@ const getAll = async () => {
   return await response.json()
 }
 
-
 const createNew = async (content) => {
   const response = await fetch(baseUrl, {
     method: 'POST',
@@ -25,5 +24,23 @@ const createNew = async (content) => {
   return await response.json()
 }
 
+const voteFor = async(anecdote) => {
+	const options = {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+			content: anecdote.content, 
+			votes: anecdote.votes+1
+		}),
+  }
 
-export default { getAll, createNew }
+	const response = await fetch(`${baseUrl}/${anecdote.id}`, options)
+
+	if (!response.ok) {
+    throw new Error('Failed to create note')
+  }
+  
+  return await response.json()
+}
+
+export default { getAll, createNew, voteFor }
