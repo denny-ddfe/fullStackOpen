@@ -1,63 +1,38 @@
-import { useState } from 'react'
-import StateInput from './StateInput'
-import loginService from '../services/login'
+import { useRef } from 'react'
+import {login, logout} from '../reducers/userReducer'
+import { useDispatch, useSelector } from 'react-redux'
 
-const Login = ({ user, setUser, setNotif }) => {
+const Login = () => {
 
-	const [username, setUsername] = useState('')
-	const [password, setPassword] = useState('')
-
-	//add cached user and log in
-	const handleLogin = async () => {
-
-		try {
-			const loginAttempt = await loginService.login({ username, password })
-			setUser(loginAttempt)
-			window.localStorage.setItem('cachedUser', JSON.stringify(loginAttempt))
-			setUsername('')
-			setPassword('')
-		} catch {
-			setNotif({msg:'Login failed', type:'error'})
-		}
-	}
-
-	//remove cached user and log out
-  const handleLogout = () => {
-    window.localStorage.setItem('cachedUser', '')
-    setUser(null)
-  }
+	const formRef = useRef()
+	const dispatch = useDispatch()
+	const user = useSelector(state=>state.user)
 
 	if (user) {
 		return (
 			<div>
         {user.name} logged in
-        <button onClick={handleLogout}>log out</button>
+        <button onClick={() => {dispatch(logout())}}>log out</button>
       </div>
 		)
 	}
 
 	return (
-		<form>
-			<StateInput params={
-				{
-					caption:'username', 
-					value:username, updateFunc:setUsername
-				}
-			}/>
-			<StateInput params={
-				{
-					caption:'password', type:'password', 
-					value:password, updateFunc:setPassword
-				}
-			}/>
-			<button
-				type="submit"
-				onClick={(e)=>{
-					e.preventDefault()
-					handleLogin()
-				}}
-			>Login
-			</button>
+		<form
+			ref={formRef}
+			onSubmit={(e)=>{
+				const form = formRef.current
+				e.preventDefault()
+				const username = form.username.value
+				const password = form.password.value
+				dispatch(login({username, password}))
+			}}
+		>
+			<label htmlFor='username'>username</label>
+			<input type='text' name='username' id='username'></input><br></br>
+			<label htmlFor='password'>password</label>
+			<input type='password' name='password' id='password'></input><br></br>
+			<button type="submit">Login</button>
 		</form>
 	)
 }

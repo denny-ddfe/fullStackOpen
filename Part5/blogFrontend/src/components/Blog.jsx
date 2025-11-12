@@ -1,6 +1,9 @@
 import Toggleable from "./Toggleable"
 
-const Blog = ({ blog, like, remove, showDelete }) => {
+import { useDispatch } from "react-redux"
+import { likeBlog, removeBlog } from "../reducers/blogsReducer"
+
+const Blog = ({ blog, showDelete }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -8,6 +11,8 @@ const Blog = ({ blog, like, remove, showDelete }) => {
     borderWidth: 1,
     marginBottom: 5
   }
+
+	const dispatch = useDispatch()
 
   return (
     <div className="blog" style={blogStyle}>
@@ -17,15 +22,17 @@ const Blog = ({ blog, like, remove, showDelete }) => {
         <span className="blogUrl">url: {blog.url}</span>
         <br></br>
         <span className='blogLikes'>likes: {blog.likes}</span><button
-          onClick={async()=>{
-            await like(blog)
+          onClick={()=>{
+            dispatch(likeBlog(blog))
           }
         }>like</button>
         <br></br>
         <span className="blogContributor">contributor: {blog.user.name}</span>
       </Toggleable>
-      {showDelete && <button onClick={async()=>{
-        remove(blog)
+      {showDelete && <button onClick={()=>{
+				if (window.confirm(`Remove ${blog.title}?`)) {
+					dispatch(removeBlog(blog))
+				}
       }}>remove</button>}
     </div>
   )

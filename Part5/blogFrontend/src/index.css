@@ -1,6 +1,8 @@
 .notif {
-    font-size: 30px;
+    font-size: 20px;
     background: lightgrey;
+		border: 1px solid black
+
 }
 
 .error {

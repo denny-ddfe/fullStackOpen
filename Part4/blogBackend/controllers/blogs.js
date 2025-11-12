@@ -63,7 +63,8 @@ blogsRouter.delete('/:id', userExtractor, async(request, response) => {
   }
 
   await Blog.findByIdAndDelete(request.params.id)
-  response.status(204).end()
+	
+  response.status(200).json(blogToDelete)
 
 })
 
