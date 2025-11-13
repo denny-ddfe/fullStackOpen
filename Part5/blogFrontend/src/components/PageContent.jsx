@@ -1,20 +1,24 @@
+
 import Blog from './Blog'
 import BlogForm from './BlogForm'
 import Toggleable from './Toggleable'
 
 import { useSelector } from 'react-redux'
+import { useBlogs } from '../hooks/useBlogs'
 
-const PageContent = ({ user }) => {
+const PageContent = () => {
 
+	const user = useSelector(state=>state.user)
 
-	const blogs = useSelector(state=>[...state.blogs].sort((a,b)=>b.likes-a.likes))
+	const {blogsQuery} = useBlogs()
 
-
-	
 	//user not logged in? No content for you
 	if (!user) {
 		return null
 	}
+
+	if (blogsQuery.isLoading) {return <p>Loading...</p>}
+	if (blogsQuery.isError) {return <p>Failed to load blogs.</p>}
 	
 	//page content
 	return (
@@ -24,7 +28,7 @@ const PageContent = ({ user }) => {
 			<BlogForm/>
 		</Toggleable>
 		{/*blog list. Sorted and mapped to blog component*/}
-		{blogs.map(blog => {
+		{blogsQuery.data.sort((a,b)=>b.likes-a.likes).map(blog => {
 			
 			return <Blog 
 				key={blog.id} 

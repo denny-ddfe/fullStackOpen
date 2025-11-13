@@ -37,7 +37,7 @@ const App = () => {
       {user && <h2>blogs</h2>}
 			<Notifications/>
 			<Login/>
-			<PageContent {...{user}}/>
+			<PageContent/>
     </>
   )
 }

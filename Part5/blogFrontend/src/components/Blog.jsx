@@ -1,9 +1,8 @@
 import Toggleable from "./Toggleable"
-
-import { useDispatch } from "react-redux"
-import { likeBlog, removeBlog } from "../reducers/blogsReducer"
+import { useBlogs } from "../hooks/useBlogs"
 
 const Blog = ({ blog, showDelete }) => {
+
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -12,7 +11,7 @@ const Blog = ({ blog, showDelete }) => {
     marginBottom: 5
   }
 
-	const dispatch = useDispatch()
+	const {likeBlogMutation, removeBlogMutation} = useBlogs()
 
   return (
     <div className="blog" style={blogStyle}>
@@ -23,7 +22,7 @@ const Blog = ({ blog, showDelete }) => {
         <br></br>
         <span className='blogLikes'>likes: {blog.likes}</span><button
           onClick={()=>{
-            dispatch(likeBlog(blog))
+            likeBlogMutation.mutate(blog)
           }
         }>like</button>
         <br></br>
@@ -31,7 +30,7 @@ const Blog = ({ blog, showDelete }) => {
       </Toggleable>
       {showDelete && <button onClick={()=>{
 				if (window.confirm(`Remove ${blog.title}?`)) {
-					dispatch(removeBlog(blog))
+					removeBlogMutation.mutate(blog)
 				}
       }}>remove</button>}
     </div>

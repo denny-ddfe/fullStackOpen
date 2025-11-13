@@ -1,13 +1,11 @@
 import { useRef } from 'react'
 
-import { useDispatch } from 'react-redux'
-import { createBlog } from '../reducers/blogsReducer'
-
+import { useBlogs } from '../hooks/useBlogs'
 
 const BlogForm = () => {
 
-	const dispatch = useDispatch()
 	const formRef = useRef(null)
+	const {addBlogMutation} = useBlogs()
 
 	return (
 		<><h2>create new</h2>
@@ -23,7 +21,7 @@ const BlogForm = () => {
 				const title = form.title.value
 				const author = form.author.value
 				const url = form.url.value
-				dispatch(createBlog({title, author, url}))
+				addBlogMutation.mutate({title, author, url})
 			}}>
 			<label htmlFor='title'>title</label>
 			<input type='text' name='title' id='title'></input><br></br>
