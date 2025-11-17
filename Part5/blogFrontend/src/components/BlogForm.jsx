@@ -1,8 +1,10 @@
 import { useRef } from 'react'
-
+import { useNavigate } from 'react-router-dom'
 import { useBlogs } from '../hooks/useBlogs'
 
 const BlogForm = () => {
+
+	const navigate = useNavigate()
 
 	const formRef = useRef(null)
 	const {addBlogMutation} = useBlogs()
@@ -22,6 +24,7 @@ const BlogForm = () => {
 				const author = form.author.value
 				const url = form.url.value
 				addBlogMutation.mutate({title, author, url})
+				navigate('/')
 			}}>
 			<label htmlFor='title'>title</label>
 			<input type='text' name='title' id='title'></input><br></br>

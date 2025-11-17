@@ -62,9 +62,18 @@ blogsRouter.delete('/:id', userExtractor, async(request, response) => {
     return response.status(401).json({error: 'Blog not created by logged in user'})
   }
 
-  await Blog.findByIdAndDelete(request.params.id)
+  const deletedBlog = await Blog.findByIdAndDelete(request.params.id)
 	
-  response.status(200).json(blogToDelete)
+	if (!deletedBlog) {
+		return response.status(500).json({error: 'MongoDB died of ligma'})
+	}
+
+	request.user.blogs = request.user.blogs.filter((blog)=>
+		!blog.equals(deletedBlog._id)
+	)
+	await request.user.save()
+
+  response.status(200).json(deletedBlog)
 
 })
 

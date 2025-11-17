@@ -1,22 +1,23 @@
-import Toggleable from "./Toggleable"
 import { useBlogs } from "../hooks/useBlogs"
+import { useMatch } from "react-router-dom"
+import { useSelector } from "react-redux"
 
-const Blog = ({ blog, showDelete }) => {
+const Blog = () => {
 
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5
-  }
+	const user = useSelector(state=>state.user)
 
-	const {likeBlogMutation, removeBlogMutation} = useBlogs()
+	const {blogsQuery, likeBlogMutation, removeBlogMutation} = useBlogs()
+
+	const match = useMatch('/blogs/:id')
+	
+	if (blogsQuery.isLoading) {return <p>Loading...</p>}
+	if (blogsQuery.isError) {return <p>Failed to load blogs.</p>}
+
+	const blog = blogsQuery.data.find((blog) => blog.id===match.params.id)
 
   return (
-    <div className="blog" style={blogStyle}>
-      <div className='blogHeading'>{blog.title} by {blog.author}</div>
-      <Toggleable buttonLabel='view' hideLabel='hide' >
+		<>
+      <h2>{blog.title} by {blog.author}</h2>
         <br></br>
         <span className="blogUrl">url: {blog.url}</span>
         <br></br>
@@ -26,14 +27,13 @@ const Blog = ({ blog, showDelete }) => {
           }
         }>like</button>
         <br></br>
-        <span className="blogContributor">contributor: {blog.user.name}</span>
-      </Toggleable>
-      {showDelete && <button onClick={()=>{
+        <span className="blogContributor">added by {blog.user.name}</span>
+      {user.username===blog.user.username && <button onClick={()=>{
 				if (window.confirm(`Remove ${blog.title}?`)) {
 					removeBlogMutation.mutate(blog)
 				}
       }}>remove</button>}
-    </div>
+		</>
   )
 }
 
