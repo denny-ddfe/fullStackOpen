@@ -5,8 +5,6 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { Navigate, Link } from 'react-router-dom'
 
-import Notifications from './Notifications'
-
 import userService from '../services/users'
 
 const Login = ({isLogin}) => {
@@ -28,18 +26,9 @@ const Login = ({isLogin}) => {
 		return <Navigate replace to="/"/>
 	}
 
-	
-
 	return (
 		<>
-			<Notifications/>
 			<h2>Login</h2>
-
-			{/* <button onClick={()=>{
-				setFormType(formType==='login'?'create':'login')
-			}}>
-				{formType==='login'?'create user':'login'}
-			</button> */}
 
 			<Link to={isLogin?'/createuser':'/login'}>
 				{isLogin?

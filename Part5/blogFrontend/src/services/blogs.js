@@ -19,7 +19,7 @@ const create = async (newBlog, token) => {
 const like = async(blogToLike, token) => {
   
   const reqBody = {...blogToLike, likes:blogToLike.likes+1}
-  
+	
   const response = await axios.put(
     `${baseUrl}/${blogToLike.id}`,
     reqBody,
@@ -38,4 +38,23 @@ const remove = async (blogToRemove, token) => {
 
 }
 
-export default { getAll, create, like, remove }
+const createComment = async (newComment, blog, token) => {
+  
+  const response = await axios.post(
+    `${baseUrl}/${blog.id}/comments`,
+    newComment, 
+    {headers:{Authorization: token}}
+  )
+  return response.data
+}
+
+const deleteComments = async (blog) => {
+
+	const response = await axios.delete(
+    `${baseUrl}/${blog.id}/comments`
+  )
+  return response.data
+
+}
+
+export default { getAll, create, like, remove, createComment, deleteComments }

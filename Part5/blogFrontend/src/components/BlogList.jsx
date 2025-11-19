@@ -1,12 +1,23 @@
 
-import Blog from './Blog'
+import { 
+	TableContainer, 
+	Table, 
+	TableBody, 
+	TableRow, 
+	TableCell,
+	TableHead,
+	Button,
+	Stack
+} from '@mui/material'
 import { useBlogs } from '../hooks/useBlogs'
 
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import PageHeader from './PageHeader'
 
 const BlogList = () => {
 
-	const {blogsQuery} = useBlogs()
+	const {blogsQuery} = useBlogs() 
+	const navigate = useNavigate()
 
 	if (blogsQuery.isLoading) {return <p>Loading...</p>}
 	if (blogsQuery.isError) {return <p>Failed to load blogs.</p>}
@@ -23,19 +34,36 @@ const BlogList = () => {
 	//page content
 	return (
 	<>
-		<h2>Blogs</h2>
-		{blogsQuery.data.sort((a,b)=>b.likes-a.likes).map(blog => {
-			
-			return <div style={blogStyle} key={blog.id}><Link to={`/blogs/${blog.id}`}>
-				{blog.title}
-			</Link></div>
-			// return <Blog 
-			// 	key={blog.id} 
-			// 	blog={blog} 
-			// 	showDelete={blog.user.username === (user?.username || '')}
-			// />
+		<PageHeader caption='Blogs'/>
+		
+		<Stack sx={{width:'60%', marginLeft: 'auto', marginRight: 'auto'}}>
 
-		})}
+		<TableContainer>
+			<Table >
+
+				<TableHead><TableRow>
+					<TableCell width={'80%'}>Title</TableCell>
+					<TableCell>Author</TableCell>
+				</TableRow></TableHead>
+
+				<TableBody>
+					{blogsQuery.data.sort((a,b)=>b.likes-a.likes).map(blog => {
+						return <TableRow key={blog.id}> 
+							<TableCell>
+								<Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+							</TableCell>
+							<TableCell>{blog.author}</TableCell>
+						</TableRow>
+					})}
+				</TableBody>
+
+			</Table>
+		</TableContainer>
+
+		<Button 
+			variant='contained'
+		onClick={() => {navigate('/createblog')}}>create new</Button>
+		</Stack>			
 	</>
 )}
 

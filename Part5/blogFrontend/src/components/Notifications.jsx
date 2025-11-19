@@ -1,19 +1,29 @@
-import { useSelector } from 'react-redux'
+import { Snackbar, Typography } from "@mui/material"
+import { useSelector } from "react-redux"
 
 const Notifications = () => {
 
-	const content = useSelector(state=>state.notifs)
+	const notifs = useSelector(state=>state.notifs)
 
-	if (content.length===0) {return null}
+	const containerStyle = {
+		border:'1px solid black', 
+		padding:'4px',
+		backgroundColor:'#dddddd'
+	}
 
-	return <div className='notif'>
-		{content.map((notif)=>{
-			return <div key={notif.timestamp} className={notif.type}>
-				{notif.msg}
-			</div>
-		})}
-		
-	</div>
+	return <Snackbar open={notifs.length>0}>
+		<div style={containerStyle}>
+			{notifs.map(notif=>{
+				return <Typography 
+					className={notif.type} 
+					key={notif.timestamp}
+				>
+					{notif.msg}
+				</Typography>
+			})}
+		</div>
+	</Snackbar>
+
 }
 
 export default Notifications

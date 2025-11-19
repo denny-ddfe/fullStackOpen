@@ -1,4 +1,16 @@
 import {useUsers} from '../hooks/useUsers'
+import { Link } from 'react-router-dom'
+
+import { 
+	TableContainer, 
+	Table,
+	TableHead, 
+	TableBody, 
+	TableRow,
+	TableCell,
+	Typography
+} from '@mui/material'
+import PageHeader from './PageHeader'
 
 const UserList = () => {
 
@@ -9,26 +21,27 @@ const UserList = () => {
 
 	return (
 		<>
-			<h2>Users</h2>
-			<table>
+			<PageHeader caption='Users'/>
+			<TableContainer>
+				<Table sx={{width:'60%', marginLeft: 'auto', marginRight: 'auto'}}>
+					<TableHead>
+						<TableRow>
+							<TableCell width={'80%'}>Username</TableCell>
+							<TableCell>Blogs created</TableCell>
+						</TableRow>
+					</TableHead>
 
-				<thead>
-					<tr>
-						<td></td>
-						<td>Blogs created</td>
-					</tr>
-				</thead>
+					<TableBody>
+						{usersQuery.data.map((user)=>
+							<TableRow key={user.username}>
+								<TableCell><Link to={user.id}>{user.username}</Link></TableCell>
+								<TableCell> {user.blogs.length}</TableCell>
+							</TableRow>)
+						}
+					</TableBody>
 
-				<tbody>
-					{usersQuery.data.map((user)=>
-						<tr key={user.username}>
-							<td>{user.username}</td>
-							<td> {user.blogs.length}</td>
-						</tr>)
-					}
-				</tbody>
-
-			</table>
+				</Table>
+			</TableContainer>
 		</>
 	)
 

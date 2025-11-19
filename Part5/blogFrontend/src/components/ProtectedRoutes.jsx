@@ -2,8 +2,6 @@ import { Navigate, Outlet } from 'react-router-dom'
 import Navbar from './Navbar'
 import { useSelector } from 'react-redux'
 
-import Notifications from './Notifications'
-
 const ProtectedRoutes = () => {
 
 	const user = useSelector(state=>state.user)
@@ -12,7 +10,6 @@ const ProtectedRoutes = () => {
 
 	return <>
 		<Navbar/>
-		<Notifications/>
 		<Outlet/>
 	</>
 	

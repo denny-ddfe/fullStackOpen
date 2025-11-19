@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from "react-redux"
 import { logout } from "../reducers/userReducer"
 import { Link } from "react-router-dom"
+import { AppBar, Toolbar, Button, Box, Typography } from "@mui/material"
 
 const Navbar = () => {
 
@@ -8,17 +9,28 @@ const Navbar = () => {
 
 	const user = useSelector(state=>state.user)
 
-	const padding = {
-    padding: 10
-  }
+	return <AppBar position="static"><Toolbar>
 
-	return <div>
-		<Link style={padding} to={''}>View blogs</Link>
-		<Link style={padding} to={'createblog'}>Create new</Link>
-		<Link style={padding} to={'users'}>View users</Link>
-		{user.name} logged in
-		<button onClick={() => {dispatch(logout())}}>log out</button>
-	</div>
+		<Box>
+		<Button color="inherit" component={Link} to={''}>
+			View Blogs
+		</Button>
+		<Button color="inherit" component={Link} to={'users'}>
+			View users
+		</Button>
+		</Box>
+
+		<Box sx={{ display: "flex", ml: "auto", alignItems:"center" }}>
+		<Typography variant="body2">{user.name} logged in</Typography>
+		<Button 
+			color="inherit" 
+			onClick={() => {dispatch(logout())}}
+		>
+			log out
+		</Button>
+		</Box>
+
+</Toolbar></AppBar>
 
 }
 

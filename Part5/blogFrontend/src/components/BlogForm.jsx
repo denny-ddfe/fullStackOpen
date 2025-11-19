@@ -1,41 +1,62 @@
 import { useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { useBlogs } from '../hooks/useBlogs'
 
-const BlogForm = () => {
+import { TextField, Button, Stack, Typography } from '@mui/material';
+import PageHeader from './PageHeader';
 
-	const navigate = useNavigate()
+const BlogForm = () => {
 
 	const formRef = useRef(null)
 	const {addBlogMutation} = useBlogs()
 
+	const textFieldProps = (caption) => {
+		return {
+			required: true,
+			label: caption,
+			name: caption.toLowerCase(),
+			id: caption.toLowerCase(),
+			size: 'small'
+		}
+	}
+
 	return (
-		<><h2>create new</h2>
-		<form 
-			ref={formRef} 
-			onSubmit={(e)=>{
-				e.preventDefault()
-				const form = formRef.current;
-				if (!form.checkValidity()) {
-					form.reportValidity();
-					return;
-				}
-				const title = form.title.value
-				const author = form.author.value
-				const url = form.url.value
-				addBlogMutation.mutate({title, author, url})
-				navigate('/')
+		<>
+			<PageHeader caption='Create New'/>
+			<form 
+				ref={formRef} 
+				onSubmit={(e)=>{
+					e.preventDefault()
+					const form = formRef.current;
+					
+					if (!form.checkValidity()) {
+						form.reportValidity();
+						return;
+					}
+					const title = form.title.value
+					const author = form.author.value
+					const url = form.url.value
+					addBlogMutation.mutate({title, author, url})
 			}}>
-			<label htmlFor='title'>title</label>
-			<input type='text' name='title' id='title'></input><br></br>
-			<label htmlFor='author'>author</label>
-			<input type='text' name='author' id='author'></input><br></br>
-			<label htmlFor='url'>url</label>
-			<input type='url' name='url' id='url'></input><br></br>
-			<button 
-				type='submit' 
-			>create</button>
-		</form>
+				<Stack 
+					spacing={2} 
+					sx={{ 
+						width: "60%", 
+						marginTop: '2em',
+						marginLeft: 'auto',
+						marginRight: 'auto'
+					}}
+					>
+				
+				<TextField {...{...textFieldProps('Title'), type:'text'}}	/>
+				<TextField {...{...textFieldProps('Author'), type:'text'}}/>
+				<TextField {...{...textFieldProps('URL'), type:'url'}}/>
+				<Button 
+					variant='contained'
+					type='submit' 
+				>create</Button>
+				</Stack>
+				
+			</form>
 		</>
 	)
 }

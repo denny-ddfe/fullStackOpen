@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
+import { Container, Alert } from '@mui/material'
+
 import {
   Routes, Route
 } from 'react-router-dom'
@@ -9,11 +11,12 @@ import Login from './components/Login'
 import BlogList from './components/BlogList'
 import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
+import User from './components/User'
 import UserList from './components/UserList'
 import ProtectedRoutes from './components/ProtectedRoutes'
+import Notifications from './components/Notifications'
 
 import { setUser } from './reducers/userReducer'
-import { setBlogs } from './reducers/blogsReducer'
 
 import './index.css'
 
@@ -22,12 +25,9 @@ const App = () => {
 
 	const [isLoading, setLoading] = useState(true)
 
-	useEffect(() => {
-		//get blogs from DB
-		dispatch(setBlogs())
-	}, [])
-
 	const user = useSelector(state=>state.user)
+	const notifs = useSelector(state=>state.notifs)
+	
 	const dispatch = useDispatch()
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const App = () => {
 
   //page content
   return (
-		<>
+		<Container>
 			<Routes>
 
 				<Route path='/login' element={<Login isLogin={true}/>} />
@@ -57,13 +57,17 @@ const App = () => {
 				<Route element={<ProtectedRoutes {...{user}}/>} >
 					<Route path='/' element={<BlogList/>} />
 					<Route path='/blogs/:id' element={<Blog />} />
+					<Route path='/users/:id' element={<User />} />
 					<Route path='createblog' element={<BlogForm/>} />
 					<Route path='users' element={<UserList/>} />
 				</Route>
 
 			</Routes>
-		</>
+
+			<Notifications/>
+
+		</Container>
   )
 }
-
+//message={notifs.map(notif=>notif.msg).join('\n')}
 export default App 

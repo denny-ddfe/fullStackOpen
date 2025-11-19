@@ -4,7 +4,11 @@ const initialUsers = [
         "username": "testUsername",
         "passwordHash": "$2b$10$BbDSBoQ31w0gQZS6XtWR/eAUYcdX4ZYub.N/f.xg4kwTrqLUnmnIi",
         "name": "test username",
-        "blogs": ["68f061b49da585757ea51986"]
+        "blogs": [
+					"68f061b49da585757ea51986",
+					"69166b8ecbf8700612f05ea0",
+					"69166b8ecbf8700612f05ea1"
+				]
     },
     {
         "_id": "68feedd653e24d10aff46dda",

@@ -28,6 +28,7 @@ export const login = ({username, password}) => {
 			const loginAttempt = await loginService.login({ username, password })
 			dispatch(setUser(loginAttempt))
 			window.localStorage.setItem('cachedUser', JSON.stringify(loginAttempt))
+			dispatch(showNotif({msg:'Welcome to blog app!', type:'success'}))
 		} catch {
 			dispatch(showNotif({msg:'Login failed', type:'error'}))
 		}

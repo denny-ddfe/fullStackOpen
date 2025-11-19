@@ -7,6 +7,7 @@ const initialBlogs = [
     "url": "https://reactpatterns.com/",
     "likes": 7,
     "user": "68feedd653e24d10aff46dd9",
+		"comments": [],
     "_id": "68f061b49da585757ea51986"
   },
   {
@@ -15,13 +16,17 @@ const initialBlogs = [
     "url": "https://abc.com/",
     "likes": 6,
     "user": "68feedd653e24d10aff46dd9",
+		"comments": [],
+		"_id": "69166b8ecbf8700612f05ea0"
   },
   {
-    "title": "3rd",
+    "title": "3rd", 
     "author": "def",
     "url": "https://def.com/",
     "likes": 5,
     "user": "68feedd653e24d10aff46dd9",
+		"comments": [],
+		"_id": "69166b8ecbf8700612f05ea1"
   },
   {
     "title": "TDD harms architecture",
@@ -29,6 +34,7 @@ const initialBlogs = [
     "url": "http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html",
     "likes": 0,
     "user": "68feedd653e24d10aff46dda",
+		"comments": [],
     "_id": "68f061b49da585757ea5198a"
   },
 ]
