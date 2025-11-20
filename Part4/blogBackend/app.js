@@ -8,6 +8,8 @@ const blogsRouter = require('./controllers/blogs')
 const commentsRouter = require('./controllers/comments')
 const loginsRouter = require('./controllers/logins')
 
+const path = require('path');
+
 const app = express()
 
 mongoose
@@ -32,7 +34,7 @@ if (process.env.NODE_ENV === 'test') {
   app.use('/api/testing', testingRouter) 
 }
 
-app.get('*', (req, res) => {
+app.get(/.*/, (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
